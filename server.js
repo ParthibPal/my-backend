@@ -3,21 +3,28 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const authRoutes = require("./routes/authRoutes");  //importing authRoutes
+const authRoutes = require("./routes/authRoutes");
 
-const app = express(); //creating express app
-app.use(cors());    //enable cors for all routes
-app.use(express.json());    //parse incoming JSON requests
+const app = express();
 
-//routes
-app.use("/api/auth", authRoutes);   //all auth routes under /api/auth
+// CORS options: only allow your frontend domain
+const corsOptions = {
+  origin: 'https://parthibpal.github.io',
+  credentials: true,
+};
 
-// Connect to MongoDB
+app.use(cors(corsOptions));
+app.use(express.json());
+
+app.use("/api/auth", authRoutes);
+
+const PORT = process.env.PORT || 5000;
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected 🚀");
-    app.listen(5000, () => {
-      console.log("Server is running on port 5000");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
   })
   .catch((err) => {
