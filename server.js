@@ -6,7 +6,12 @@ require('dotenv').config();
 const authRoutes = require("./routes/authRoutes");  //importing authRoutes
 
 const app = express(); //creating express app
-app.use(cors());    //enable cors for all routes
+app.use(cors({
+  origin: "https://parthibpal.github.io", // Allow frontend domain
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true
+}));
+    //enable cors for all routes
 app.use(express.json());    //parse incoming JSON requests
 
 //routes
